@@ -4,7 +4,7 @@
 import boto3
 import time
 rds = boto3.client('rds')
-dbid = 'chdb-instance-2'
+dbid = 'chdb-instance-3'
 checkInterval = 10
 
 response = rds.create_db_instance(
@@ -45,7 +45,7 @@ print(' ')
 print('Now Deleting ' + dbid);
 print(' ')
         
-finalresponse = client.delete_db_instance(
+finalresponse = rds.delete_db_instance(
     DBInstanceIdentifier=dbid,
     SkipFinalSnapshot=True,
     DeleteAutomatedBackups=True
