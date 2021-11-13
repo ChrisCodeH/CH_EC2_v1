@@ -1,3 +1,6 @@
+#Create 2 EC2 Instances, Start, Tag, Check Status, Stop and Terminated
+#Created By Christopher Howard
+
 import boto3
 import time
 ec2 = boto3.resource('ec2')
@@ -14,7 +17,7 @@ instances = ec2.create_instances(
  )
  
 for instance in instances:
-    print('Instance Created (ID): ' + instance.id)    
+    print('Instance Created (ID): ' + instance.id)      
     
 count=1
 for instance in instances:
@@ -37,7 +40,7 @@ for instance in instances:
     count += 1
     
     #Check IPs
-    print("Waiting for IP Assignment..")
+    print('Waiting for PIP assignment: ' + instance.id) 
     while(instance.public_ip_address==None):  #Keep Checking for PIP assignment
         time.sleep(5)
         instance.reload() 
@@ -50,3 +53,46 @@ for instance in instances:
     print('State: ' + instance.state.get('Name'))
     print('################################') 
     print(' ') 
+    
+#Wait for both instances to be in running state
+for instance in instances:
+    print('Checking for Run state: ' + instance.id) 
+    while(int(instance.state.get('Code'))!=16):  #Check for Running State
+        time.sleep(5)
+        instance.reload() 
+        print("Waiting for running state")
+    print(instance.id + ' is running') 
+    print(' ') 
+    
+print('Now Stopping and Terminating Instances..') 
+
+for instance in instances:
+    print('Stopping ' + instance.id) 
+    instance.stop(
+    Hibernate=False,
+    DryRun=False,
+    Force=True
+    )
+    
+    while(int(instance.state.get('Code'))!=80):  #Check for Stopped State
+        time.sleep(5)
+        instance.reload() 
+        print("Waiting for stop")
+        
+    print(instance.id + ' Stopped') 
+    print(' ') 
+    
+    instance.terminate(
+    DryRun=False
+    )
+    
+    print("Terminating: " + instance.id)
+    while(int(instance.state.get('Code'))!=48):  #Check for Complete Termination
+        time.sleep(5)
+        instance.reload() 
+        print("Waiting for Termination")
+    
+    print(instance.id + ' Terminated') 
+    print(' ') 
+    
+print('Done all ec2 instances terminated!')
