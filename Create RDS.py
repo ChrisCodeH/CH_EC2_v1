@@ -4,7 +4,7 @@
 import boto3
 import time
 rds = boto3.client('rds')
-dbid = 'chdb-instance-3'
+dbid = 'chdb-instance-1'
 checkInterval = 10
 
 response = rds.create_db_instance(
