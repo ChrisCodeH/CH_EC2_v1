@@ -1,4 +1,4 @@
-#Create 2 EC2 Instances, Start, Tag, Check Status, Stop and Terminated
+#Create 2 EC2 Instances, Start, Tag, Check Status, Stop and Terminate
 #Created By Christopher Howard
 
 import boto3
