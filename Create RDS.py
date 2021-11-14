@@ -1,4 +1,4 @@
-#Create RDS Instance, Start, Stop and Terminate
+#Automatic Creation of RDS Instance, Start, Stop and Terminate
 #Created By Christopher Howard
 
 import boto3
